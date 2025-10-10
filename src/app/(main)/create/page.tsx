@@ -65,7 +65,7 @@ const CreatePage = () => {
           id="title"
           placeholder="Example: Main Header, Blog Page, Search Results"
         />
-        <ErrorMessage message={errors.title?.message!} />
+        <ErrorMessage message={errors.title?.message ?? ""} />
       </fieldset>
 
       <fieldset className="mt-4 flex flex-col gap-2">
@@ -77,7 +77,7 @@ const CreatePage = () => {
           placeholder="Write Something..."
           rows={7}          
         />
-        <ErrorMessage message={errors.content?.message!} />
+        <ErrorMessage message={errors.content?.message ?? ""} />
       </fieldset>
 
       <div className="mt-4 relative flex flex-col items-center border-2 border-dashed border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-gray-50 transition">
