@@ -14,7 +14,7 @@ const LoginForm = () => {
             formState: {errors}
         } = useForm({ resolver: zodResolver(logInSchema)})
 
-    const {mutate, error, isPending} = useMutation({
+    const {mutate, data, error, isPending} = useMutation({
         mutationFn: LogIn
     })
 
@@ -34,7 +34,7 @@ const LoginForm = () => {
             </fieldset>
             <button className="button-secondary w-1/2 m-auto">{isPending ? "Login is pending" : "Login"}</button>
         </form>
-        {error && <ErrorMessage message={error.message}/> }
+        {data?.error && <ErrorMessage message={data.error}/> }
         </>
     )
 }

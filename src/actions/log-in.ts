@@ -6,11 +6,12 @@ import { logInSchema } from "./schemas"
 import { z } from "zod"
 
 export const LogIn = async (userData: z.infer<typeof logInSchema>) => {
-    const parsedData = logInSchema.parse(userData)
-
-    const supabase = await createClient()
-    const {data: {user}, error} = await supabase.auth.signInWithPassword(parsedData)
-
-    if (error) throw error
-    redirect("/")
+    const parsedData = logInSchema.parse(userData);
+ 
+    const supabase = await createClient();
+    const { data: { user }, error } = await supabase.auth.signInWithPassword(parsedData);
+ 
+    if (error) return { error: error.message }  
+ 
+    redirect('/');
 }
