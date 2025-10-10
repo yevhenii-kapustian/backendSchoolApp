@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+* {
+    box-sizing: border-box;
+}
+
+@layer components {
+    .button-primary {
+        @apply py-4 px-8 bg-red-500 text-4xl text-white font-bold rounded-2xl
+    }
+
+    .button-secondary {
+        @apply py-2 px-4 bg-red-500 text-xl text-white font-bold rounded-2xl
+    }
+
+    .button-tertiary {
+        @apply py-2 px-4 bg-gray-800 text-xl text-white font-bold rounded-2xl
+    }
+}
