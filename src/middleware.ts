@@ -20,6 +20,7 @@ export const middleware = async (request: NextRequest) => {
     )
 
     const {data : {user}, error} = await supabase.auth.getUser()
+    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL
 
     const protectedRoutes = [
         /^\/create$/,
@@ -32,5 +33,13 @@ export const middleware = async (request: NextRequest) => {
         
         return NextResponse.redirect(newUrl)
     }
+
+    if (user && protectedRoutes.some(routes => routes.test(request.nextUrl.pathname)) && user.email !== adminEmail) {
+        const newUrl = request.nextUrl.clone()
+        newUrl.pathname = "/auth/login"
+        
+        return NextResponse.redirect(newUrl)
+    }
+
     return supabaseResponse
 }

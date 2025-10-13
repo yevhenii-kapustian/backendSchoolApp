@@ -5,13 +5,14 @@ import LogOut from "./LogOutButton"
 const AccountLinks = async () => {
     const supabase = await createClient()
     const {data: {user}, error} = await supabase.auth.getUser()
+    const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL
     
     return (
         <div>
             {
                 user ? 
                 <>
-                <Link href="/create" className="button-tertiary mr-4">Create Post</Link>
+                {user.email === adminEmail && <Link href="/create" className="button-tertiary mr-4">Create Post</Link> }
                 <LogOut/>
                 </>
                 : <Link href="/auth/login" className="button-secondary">Log In</Link>
