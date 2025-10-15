@@ -1,13 +1,15 @@
 import LoginForm from "./LoginForm"
-import Link from "next/link"
 
 const LoginPage  = () => {
     return(
-        <div className="w-[700px] mx-auto p-4 border rounded-xl">
-            <h2 className="mb-4 text-3xl font-bold">Log In!</h2>
+        <div className="w-[400px] mx-auto p-8 rounded bg-white">
+            <div className="mb-3 flex justify-between border-b">
+                <a href="/auth/login" className="w-1/2 p-3 text-center border-b-2 pointer-events-none">Login</a>
+                <a href="/auth/signup" className="w-1/2 p-3 text-center hover:border-b-2">Sign Up</a>
+            </div>
             <LoginForm/>
-            <div className="mt-4">
-                {"Don't have an account? Sign Up "} <Link className="text-red-500" href="/auth/signup">here!</Link>
+            <div className="mt-5 text-sm text-center">
+                By signing in, you agree to our <span className="font-bold">Terms of Use.</span>
             </div>
         </div>
     )

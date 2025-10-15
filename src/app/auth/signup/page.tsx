@@ -1,14 +1,13 @@
-import Link from "next/link"
 import SignUpForm from "./SignUpForm"
 
 const SignUpPage  = () => {
     return(
-        <div className="w-[700px] mx-auto p-4 border rounded-xl">
-            <h2 className="mb-4 text-3xl font-bold">Sign Up!</h2>
-            <SignUpForm/>
-            <div className="mt-4">
-                Already have an account? Log In <Link className="text-red-500" href="/auth/login">here!</Link>
+        <div className="w-[400px] mx-auto p-8 rounded bg-white">
+            <div className="mb-3 flex justify-between border-b">
+                <a href="/auth/login" className="w-1/2 p-3 text-center hover:border-b-2">Login</a>
+                <a href="/auth/signup" className="w-1/2 p-3 text-center border-b-2 pointer-events-none">Sign Up</a>
             </div>
+            <SignUpForm/>
         </div>
     )
 }

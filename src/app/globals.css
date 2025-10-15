@@ -4,16 +4,36 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 @layer components {
     .button-primary {
         @apply py-4 px-8 bg-red-500 text-4xl text-white font-bold rounded-2xl
     }
 
     .button-secondary {
-        @apply py-2 px-4 bg-red-500 text-xl text-white font-bold rounded-2xl
+        @apply py-2 px-4 bg-[#02282C] text-xl text-white font-bold rounded
     }
 
     .button-tertiary {
         @apply py-2 px-4 bg-gray-800 text-xl text-white font-bold rounded-2xl
     }
+}
+
+@layer utilities {
+  @keyframes grow-once {
+    0% { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.5; }
+  }
+
+  .animate-grow-once {
+    animation: grow-once 1.5s ease-out forwards;
+    transform-origin: center;
+  }
 }
