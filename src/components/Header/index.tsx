@@ -1,12 +1,10 @@
 import Logo from "../Logo"
 import AccountLinks from "../AccountLinks"
-import SearchInput from "../Search"
 
 const Header = () => {
     return(
-        <header className="p-8 flex justify-between items-center border-b">
+        <header className="py-4 px-8 flex justify-between items-center bg-[#02282C]">
             <Logo/>
-            <SearchInput/>
             <AccountLinks/>
         </header>
     )
