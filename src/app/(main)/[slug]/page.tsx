@@ -18,6 +18,7 @@ const SinglePost = async ({params}: {params:{slug: string}}) => {
             <>
                 <div>
                     <h2>{data.title}</h2>
+                    <p>{data.categories?.name}</p>
                     <p>{data.content}</p>
                     {data.image && <Image src={data.image!} alt={data.title} width={1000} height={1000} priority style={{width: "700px", height: "auto"}}/>}
                 </div> 

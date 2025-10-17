@@ -33,7 +33,8 @@ export const EditPost = async ({postId, userData}:{postId: number, userData: z.i
                                                     title: parsedData.title,
                                                     content: parsedData.content,
                                                     slug: slugify(parsedData.title),
-                                                    image: imagePublicUrl
+                                                    image: imagePublicUrl,
+                                                    category_id: parsedData.category_id
                                                 })
                                                 .eq("id", postId)
                                                 .select("slug")

@@ -12,9 +12,10 @@ export const signUpSchema = z.object({
 })
 
 export const postSchema = z.object({
-    title: z.string().min(3, "Your title must be a minimum of 3 characters").max(70, "Your title must be a maximum of 70 characters"),
-    content: z.string().min(5, "Your description must be a minimum of 5 characters").max(400, "Your description must be a maximum of 400 characters"),
-    image: z.instanceof(FormData).optional()
+    title: z.string().min(12, "The title is too short. Add more information.").max(70, "Your title must be a maximum of 70 characters"),
+    content: z.string().min(40, "Your description must be a minimum of 40 characters").max(9000, "Your description must be a maximum of 9000 characters"),
+    image: z.instanceof(FormData).optional(),
+    category_id: z.string().uuid("Select a category") 
 })
 
 export const postSchemaImage = postSchema.omit({

@@ -2,24 +2,37 @@
 
 import { EditPost } from "@/actions/edit-post"
 import {Tables} from "@/utils/supabase/database-types"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import Image from "next/image"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { postSchemaImage } from "@/actions/schemas"
 import { useState } from "react"
+import { createClient } from "@/utils/supabase/browser-client"
 
-const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<Tables<'posts'>, "title" | "content" | "image" >}) => {
+const supabase = createClient()
+
+const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<Tables<'posts'>, "title" | "content" | "image" | "category_id">}) => {
 
     const [preview, setPreview] = useState<string | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+    const { data: categories = [] } = useQuery({
+            queryKey: ['categories'],
+            queryFn: async () => {
+            const { data, error } = await supabase.from('categories').select('*').order('name')
+            if (error) throw new Error(error.message)
+            return data || []
+        }
+    })
       
     const {register, handleSubmit, setValue} = useForm({
         resolver: zodResolver(postSchemaImage),
         defaultValues: {
             title: initialValues.title,
             content: initialValues.content || undefined,
-            image: initialValues.image
+            category_id: initialValues.category_id ?? undefined,
+            image: initialValues.image,
         }
     })
 
@@ -50,6 +63,7 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
                 title: values.title,
                 content: values.content,
                 image: imageForm,
+                category_id: values.category_id
             }
         })
         })}>
@@ -61,6 +75,20 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
                 <fieldset className="mt-4 flex flex-col gap-2">
                     <label htmlFor="content" className="font-bold">Description</label>
                     <textarea className="p-2 border border-[#BEBEBE] rounded resize-none" id="content" {...register("content")} placeholder="Write Something..." rows={7} />
+                </fieldset>
+
+                 <fieldset className="mt-4 flex flex-col gap-2">
+                    <label htmlFor="content" className="font-bold">Description</label>
+                    <select
+                        className="p-2 border border-[#BEBEBE] rounded"
+                        {...register("category_id")}
+                        id="category"      
+                    >
+                        <option>Select a category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                        ))}
+                    </select>
                 </fieldset>
                 
                <div className="mt-4 relative flex flex-col items-center border-2 border-dashed border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-gray-50 transition">
