@@ -10,6 +10,7 @@ html {
 
 body {
     height: 100%;
+    background-color: #F2F4F5;
 }
 
 @layer components {

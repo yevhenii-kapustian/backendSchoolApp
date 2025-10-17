@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { postSchemaImage } from "@/actions/schemas"
 import { useState } from "react"
 
-const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<Tables<'posts'>, "title" | "content" | "image">}) => {
+const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<Tables<'posts'>, "title" | "content" | "image" >}) => {
 
     const [preview, setPreview] = useState<string | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
