@@ -65,6 +65,7 @@ const CreatePostForm = () => {
             title: values.title,
             content: values.content,
             image: imageForm,
+            price: values.price,
             category_id: values.category_id
         })
         })}
@@ -153,6 +154,19 @@ const CreatePostForm = () => {
                     <p>{descriptionCharacters}/9000</p>
                 </div>
                 <ErrorMessage message={errors.content?.message ?? ""} />
+            </fieldset>
+        </div>
+
+        <div className="mt-2 p-5 bg-white rounded">
+            <h3 className="button-secondary w-fit px-10 text-base font-semibold">Sell</h3>
+            <fieldset className="mt-5 flex flex-col gap-2">
+                <label htmlFor="title" className="text-sm">Price *</label>
+                <input
+                    className="w-2/3 p-2 border border-[#BEBEBE] rounded"
+                    {...register("price")}
+                    id="price"
+                />
+                <ErrorMessage message={errors.price?.message ?? ""} />
             </fieldset>
         </div>
 
