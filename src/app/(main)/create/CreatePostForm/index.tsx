@@ -10,12 +10,16 @@ import Image from "next/image"
 import ErrorMessage from "@/components/ErrorMessage"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/browser-client"
+import Link from "next/link"
+import { Undo2 } from "lucide-react"
 
 const supabase = createClient()
 
 const CreatePostForm = () => {
     const [preview, setPreview] = useState<string | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [titleCharacters, setTitleCharacters] = useState<number>(0)
+    const [descriptionCharacters, setDescriptionCharacters] = useState<number>(0)
 
     const { data: categories = [] } = useQuery({
         queryKey: ['categories'],
@@ -77,7 +81,12 @@ const CreatePostForm = () => {
                     {...register("title")}
                     id="title"
                     placeholder="Example: iphone 11 with warranty"
+                    onChange={(e) => setTitleCharacters(e.target.value.length)}
                 />
+                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                    <p>Please enter at least 12 characters</p>
+                    <p>{titleCharacters}/70</p>
+                </div>
                 <ErrorMessage message={errors.title?.message ?? ""} />
             </fieldset>
 
@@ -135,14 +144,29 @@ const CreatePostForm = () => {
                     className="w-2/3 p-2 border border-[#BEBEBE] rounded resize-none"
                     {...register("content")}
                     id="content"
+                    onChange={(e) => setDescriptionCharacters(e.target.value.length)}
                     placeholder="Think about what details you'd like to see in the ad and add them to the description."
                     rows={7}          
                 />
+                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                    <p>Please enter at least 40 characters</p>
+                    <p>{descriptionCharacters}/9000</p>
+                </div>
                 <ErrorMessage message={errors.content?.message ?? ""} />
             </fieldset>
         </div>
 
-        <div className="mt-2 p-5 bg-white flex justify-end">
+        <div className="mt-2 p-5 bg-white flex justify-end items-center gap-5">
+            <Link onClick={(e) => {
+                                    e.preventDefault()
+                                    window.location.href = "/"
+                                }}
+                    href="/" 
+                    className="w-fit py-2 px-4 flex items-center gap-2  text-base text-center font-bold border-b cursor-pointer"
+            >
+                <p>Back</p>
+                <Undo2 size={18}/>
+            </Link>
             <button className="button-secondary text-base w-35 cursor-pointer">{isPending ? "Pending..." : "Publish"}</button>
         </div>
     </form>

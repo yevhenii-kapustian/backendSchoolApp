@@ -1,8 +1,6 @@
 'use client'
 
-import { createClient } from "@/utils/supabase/browser-client"
-import { getHomePosts, HomePostType } from "@/utils/supabase/queries"
-import { useQuery } from "@tanstack/react-query"
+import { HomePostType } from "@/utils/supabase/queries"
 import Link from "next/link"
 
 const HomePosts = ({posts}: {posts: HomePostType}) => {

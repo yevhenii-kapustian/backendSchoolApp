@@ -2,12 +2,10 @@ import { createClient } from "@/utils/supabase/server-client"
 import Link from "next/link"
 import LogOut from "./LogOutButton"
 import { User, ChevronDown } from "lucide-react"
-import { getHomePosts } from "@/utils/supabase/queries"
 
 const AccountLinks = async () => {
     const supabase = await createClient()
     const { data: {user} } = await supabase.auth.getUser()
-    const { data: posts } = await getHomePosts(supabase)
     
     return (
     <div className="flex items-center">
@@ -17,7 +15,7 @@ const AccountLinks = async () => {
             <div className="flex items-center mr-5 gap-2 group-hover:opacity-70 cursor-pointer">
                 <User color="white"/>
                 <Link href="/myaccount" className="text-white font-bold">
-                    {posts?.[0].users.username}
+                  <p>{ user?.user_metadata?.username ?? "My Account"}</p>
                 </Link>
                 <ChevronDown color="white" size={20}/>
             </div>
