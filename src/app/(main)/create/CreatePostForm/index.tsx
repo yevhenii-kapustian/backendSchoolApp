@@ -142,11 +142,11 @@ const CreatePostForm = () => {
             <fieldset className="mt-4 flex flex-col gap-2">
                 <label htmlFor="content" className="text-sm">Description *</label>
                 <textarea
-                    className="w-2/3 p-2 border border-[#BEBEBE] rounded resize-none"
+                    className="w-2/3 p-4 border border-[#BEBEBE] rounded resize-none"
                     {...register("content")}
                     id="content"
                     onChange={(e) => setDescriptionCharacters(e.target.value.length)}
-                    placeholder="Think about what details you'd like to see in the ad and add them to the description."
+                    placeholder="Think about what details you'd like to see in the ad and add them to the description"
                     rows={7}          
                 />
                 <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
@@ -161,11 +161,14 @@ const CreatePostForm = () => {
             <h3 className="button-secondary w-fit px-10 text-base font-semibold">Sell</h3>
             <fieldset className="mt-5 flex flex-col gap-2">
                 <label htmlFor="title" className="text-sm">Price *</label>
-                <input
-                    className="w-2/3 p-2 border border-[#BEBEBE] rounded"
-                    {...register("price")}
-                    id="price"
-                />
+                <div className="w-1/4 flex items-center border border-[#BEBEBE] rounded">
+                    <input
+                        className="w-full p-2"
+                        {...register("price")}
+                        id="price"
+                    />
+                    <span className="px-3">$</span>
+                </div>
                 <ErrorMessage message={errors.price?.message ?? ""} />
             </fieldset>
         </div>
