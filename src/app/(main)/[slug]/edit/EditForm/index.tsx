@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import Image from "next/image"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { postSchemaImage } from "@/actions/schemas"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createClient } from "@/utils/supabase/browser-client"
 import { X, Undo2 } from "lucide-react"
 import ErrorMessage from "@/components/ErrorMessage"
@@ -45,6 +45,12 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
             price: initialValues.price
         }
     })
+
+    useEffect(() => {
+        if (initialValues.category_id && categories.length > 0) {
+            setValue("category_id", initialValues.category_id)
+        }
+    }, [initialValues?.category_id, categories, setValue])
 
     const { mutate, error, isPending } = useMutation({
         mutationFn: EditPost
