@@ -6,9 +6,9 @@ import { postSchema } from "./schemas"
 import { createClient } from "@/utils/supabase/server-client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { uploadImage } from "@/utils/supabase/upload-image"
+import { uploadImages } from "@/utils/supabase/upload-image"
 
-export const EditPost = async ({postId, userData}:{postId: number, userData: z.infer<typeof postSchema>}) => {
+export const EditPost = async ({postId, userData, currentImages}:{postId: number, currentImages: string[] | null, userData: z.infer<typeof postSchema>}) => {
     const parsedData = postSchema.parse(userData)
     const supabase = await createClient()
     const {data: {user}} = await supabase.auth.getUser()
@@ -21,12 +21,18 @@ export const EditPost = async ({postId, userData}:{postId: number, userData: z.i
         
     if (!user || user.id !== post?.user_id) throw new Error("Not Authorised")
 
-    const imageFile = userData.image?.get("image")
-    let imagePublicUrl = post.image
+    const imageFile = userData.image?.getAll("image")
+    let imagePublicUrl
+    const isValid = postSchema.safeParse(userData)
 
-    if (imageFile instanceof File) {
-        imagePublicUrl = await uploadImage(imageFile)
-    }
+    if (imageFile?.every(item => (typeof item !== "string") && item !== undefined) ) {
+
+        if (!isValid.success) return {error: "Malformed image file"}
+
+        imagePublicUrl = await uploadImages(imageFile as File[])
+
+        if (currentImages !== null) imagePublicUrl.push(...currentImages)
+    } else (imagePublicUrl = currentImages)
 
     const {data: updatedPost} = await supabase.from("posts")
                                                 .update({
@@ -43,8 +49,6 @@ export const EditPost = async ({postId, userData}:{postId: number, userData: z.i
                                                 .throwOnError()
 
     if (error) throw error
-
-    
 
     revalidatePath("/")
     redirect(`/${updatedPost.slug}`)

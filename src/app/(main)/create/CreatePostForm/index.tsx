@@ -5,70 +5,82 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { CreatePost } from "@/actions/create-post"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import ErrorMessage from "@/components/ErrorMessage"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/browser-client"
 import Link from "next/link"
-import { Undo2 } from "lucide-react"
+import { Undo2, X } from "lucide-react"
 
 const supabase = createClient()
 
 const CreatePostForm = () => {
-    const [preview, setPreview] = useState<string | null>(null)
-    const [selectedFile, setSelectedFile] = useState<File | null>(null)
-    const [titleCharacters, setTitleCharacters] = useState<number>(0)
-    const [descriptionCharacters, setDescriptionCharacters] = useState<number>(0)
+  const [previews, setPreviews] = useState<string[]>([])
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [titleCharacters, setTitleCharacters] = useState<number>(0)
+  const [descriptionCharacters, setDescriptionCharacters] = useState<number>(0)
 
-    const { data: categories = [] } = useQuery({
-        queryKey: ['categories'],
-        queryFn: async () => {
-            const { data, error } = await supabase.from('categories').select('*').order('name')
-            if (error) throw new Error(error.message)
-            return data
-        }
-    })
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-    const { register, handleSubmit, setValue, formState: {errors} } = useForm({
-        resolver: zodResolver(postSchemaImage),
-    })
-
-    const { mutate, error, isPending } = useMutation({
-        mutationFn: CreatePost,
-        onSettled: () => toast.success("Post Created")
-    })
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files
-        if (files && files.length > 0) {
-        const file = files[0]
-            setValue("image", files)
-            setSelectedFile(file)
-            setPreview(URL.createObjectURL(file))
-        }
+  const { data: categories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('categories').select('*').order('name')
+      if (error) throw new Error(error.message)
+      return data
     }
+  })
+
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+    resolver: zodResolver(postSchemaImage),
+  })
+
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: CreatePost,
+    onSettled: () => toast.success("Post Created")
+  })
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const filesArray = Array.from(e.target.files)
+    setSelectedFiles(prev => [...prev, ...filesArray])
+
+    const newPreviews = filesArray.map(file => URL.createObjectURL(file))
+    setPreviews(prev => [...prev, ...newPreviews])
+    setValue("image", [...selectedFiles, ...filesArray])
+  }
+
+  const handleSubmitForm = handleSubmit((values) => {
+    const formData = new FormData()
+    formData.append("title", values.title)
+    formData.append("content", values.content)
+    formData.append("price", String(values.price))
+    formData.append("category_id", values.category_id)
+
+    selectedFiles.forEach((file) => {
+      formData.append("image", file)
+    })
+
+    mutate({
+      ...values,
+      image: formData
+    })
+  })
+
+  const handleContainerClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleRemovePictures = () => {
+    setPreviews([])
+    setSelectedFiles([])
+  }
 
   return (
     <>
-    <h1 className="mb-5 text-4xl font-bold">Create Post</h1>
-
     <form
-        onSubmit={handleSubmit((values) => {
-            const imageForm = new FormData()
-
-            if (selectedFile) {
-                imageForm.append("image", selectedFile)
-            }
-
-        mutate({
-            title: values.title,
-            content: values.content,
-            image: imageForm,
-            price: values.price,
-            category_id: values.category_id
-        })
-        })}
+        onSubmit={handleSubmitForm}
         className="flex flex-col"
         >
 
@@ -108,34 +120,44 @@ const CreatePostForm = () => {
         </div>
 
         <div className="mt-2 p-5 bg-white rounded">
-            <h3 className="text-xl font-semibold">Pictures</h3>
-            <div className="w-2/3 mt-4 relative flex flex-col items-center border-2 border-dashed border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-gray-50 transition">
-                <input
-                    type="file"
-                    id="image"
-                    accept="image/png, image/jpeg"
-                    {...register("image")}
-                    onChange={handleFileChange}
-                    className="hidden"
-                />
-                <label htmlFor="image" className="h-full w-full cursor-pointer flex flex-col items-center">
-                    {preview ? (
-                        <Image
-                            src={preview}
-                            alt="preview"
-                            width={500}
-                            height={500}
-                            style={{width: "500", height: "auto"}}
-                            className="w-40 h-40 object-cover rounded-lg mb-2"
-                        />
-                    ) : (
-                    <>
-                    <span className="text-gray-600 mb-2">Click to upload an image</span>
-                    <span className="text-sm text-gray-400">(PNG or JPG)</span>
-                    </>
-                    )}
-                </label>
-            </div>
+          <h3 className="text-xl font-semibold">Pictures</h3>
+
+          <div className="relative w-2/3 mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 border-2 border-dashed border-gray-400 rounded-xl p-6">
+            <X className="absolute right-[-15px] top-[-15px] bg-white rounded-2xl cursor-pointer" size={30} onClick={handleRemovePictures} color="gray"/>
+            <input
+                  type="file"
+                  id="image"
+                  accept="image/png, image/jpeg"
+                  {...register("image")}
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  disabled={selectedFiles.length >= 4}
+            />
+
+            {previews.map((src, i) => (
+                                      <Image
+                                            key={i}
+                                            src={src}
+                                            alt={`preview-${i}`}
+                                            width={100}
+                                            height={100}
+                                            className={`w-full aspect-square object-cover rounded-lg ${selectedFiles.length >=4 && "cursor-default"}`}
+                                      />
+              ))}
+
+            {Array.from({ length: Math.max(0, 4 - previews.length) }).map((_, i) => (
+                                      <div
+                                          key={i}
+                                          className="w-full aspect-square flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50 text-gray-400 text-sm cursor-pointer"
+                                          onClick={handleContainerClick}
+                                        >
+                                          +
+                                      </div>
+            ))}
+          </div>
+
+          <p className="text-sm text-gray-400 mt-2">Up to 4 images (PNG or JPG)</p>
         </div>
 
         <div className="mt-2 p-5 bg-white rounded">
@@ -174,12 +196,9 @@ const CreatePostForm = () => {
         </div>
 
         <div className="mt-2 p-5 bg-white flex justify-end items-center gap-5">
-            <Link onClick={(e) => {
-                                    e.preventDefault()
-                                    window.location.href = "/"
-                                }}
+            <Link onClick={() => window.location.href = "/"}
                     href="/" 
-                    className="w-fit py-2 px-4 flex items-center gap-2  text-base text-center font-bold border-b cursor-pointer"
+                    className="w-fit py-2 px-4 flex items-center gap-2 text-base text-center font-bold border-b cursor-pointer"
             >
                 <p>Back</p>
                 <Undo2 size={18}/>

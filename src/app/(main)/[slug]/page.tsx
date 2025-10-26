@@ -1,38 +1,40 @@
 import { getSinglePost } from "@/utils/supabase/queries"
 import { createClient } from "@/utils/supabase/server-client"
 import DeleteButton from "./DeleteButton"
-import Image from "next/image"
 import EditButton from "./EditButton"
+import Image from "next/image"
 
-const SinglePost = async ({params}: {params:{slug: string}}) => {
-    const {slug} = await params
-    const {data, error} = await getSinglePost(slug)
+const SinglePost = async ({ params }: { params: { slug: string } }) => {
+  const { slug } = await params
 
-    const supabase = await createClient()
-    const {data: {user}} = await supabase.auth.getUser()
-    const isAuthor = user?.id === data?.user_id ? true : false
+  const supabase = await createClient()
 
-    return(
-        <div>
-            {data && 
-            <>
-                <div>
-                    <h2>{data.title}</h2>
-                    <p>{data.categories?.name}</p>
-                    <p>{data.content}</p>
-                    <p>{data.price}</p>
-                    {data.image && <Image src={data.image!} alt={data.title} width={1000} height={1000} priority style={{width: "700px", height: "auto"}}/>}
-                </div> 
-                {isAuthor && (
-                    <div>
-                        <DeleteButton postId={data.id}/>
-                        <EditButton slug={slug}/>
-                    </div>
-                )}
-            </>
-            }
+  const { data: post, error: postError } = await getSinglePost(slug)
+  if (postError) return <p>Error: {postError.message}</p>
+  if (!post) return <p>Post not found</p>
+
+  const { data: { user } } = await supabase.auth.getUser()
+  const isAuthor = user?.id === post.user_id
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold">{post.title}</h2>
+      <p className="text-sm text-gray-500">{post.categories?.name}</p>
+      <p className="my-4">{post.content}</p>
+      <p className="font-semibold">{post.price} $</p>
+
+    {post.image && post.image.map((url, index) => (
+        <Image key={Math.random() * index} src={url} alt={url} width={200} height={200}/>
+    ))}
+
+      {isAuthor && (
+        <div className="flex gap-2 mt-5">
+          <DeleteButton postId={post.id} />
+          <EditButton slug={slug} />
         </div>
-    )
+      )}
+    </div>
+  )
 }
 
 export default SinglePost

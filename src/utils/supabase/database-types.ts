@@ -35,13 +35,42 @@ export type Database = {
         }
         Relationships: []
       }
+      post_images: {
+        Row: {
+          created_at: string
+          id: number
+          post_id: number | null
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           category_id: string | null
           content: string | null
           created_at: string
           id: number
-          image: string | null
+          image: string[] | null
           price: number | null
           slug: string
           title: string
@@ -52,7 +81,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: number
-          image?: string | null
+          image?: string[] | null
           price?: number | null
           slug: string
           title: string
@@ -63,7 +92,7 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: number
-          image?: string | null
+          image?: string[] | null
           price?: number | null
           slug?: string
           title?: string

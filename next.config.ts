@@ -3,7 +3,20 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    remotePatterns: [new URL('https://inpuimyesmbtdwtekejz.supabase.co/storage/v1/object/public/images/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'inpuimyesmbtdwtekejz.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
+
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '20mb',
+    },
   },
 };
 
