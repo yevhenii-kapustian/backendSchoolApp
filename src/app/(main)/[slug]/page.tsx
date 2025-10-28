@@ -2,7 +2,8 @@ import { getSinglePost } from "@/utils/supabase/queries"
 import { createClient } from "@/utils/supabase/server-client"
 import DeleteButton from "./DeleteButton"
 import EditButton from "./EditButton"
-import Image from "next/image"
+import { ImagesSection } from "./ImagesSection"
+import { DescriptionSection } from "./DescriptionSection"
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params
@@ -19,13 +20,14 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold">{post.title}</h2>
-      <p className="text-sm text-gray-500">{post.categories?.name}</p>
-      <p className="my-4">{post.content}</p>
+      <section>
+        <DescriptionSection description={post.content} category={post.categories!.name} />
+      </section>
       <p className="font-semibold">{post.price} $</p>
 
-    {post.image && post.image.map((url, index) => (
-        <Image key={Math.random() * index} src={url} alt={url} width={200} height={200}/>
-    ))}
+      <section>
+        {post.image && <ImagesSection images={post.image} index={post.image.length}/>}
+      </section>
 
       {isAuthor && (
         <div className="flex gap-2 mt-5">
