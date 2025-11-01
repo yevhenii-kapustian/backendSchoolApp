@@ -19,7 +19,8 @@ export const getSinglePost = async (slug: string) => {
                                 slug, 
                                 image,
                                 price, 
-                                categories("id", "name", "slug")`)
+                                categories("id", "name", "slug"),
+                                created_at`)
                         .eq('slug', slug)
                         .single()
 }

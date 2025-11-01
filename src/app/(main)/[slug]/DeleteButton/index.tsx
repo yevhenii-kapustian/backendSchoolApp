@@ -11,7 +11,7 @@ const DeleteButton = ({postId}: {postId: number}) => {
         onSettled: () => toast.success("Post deleted!")
     })
 
-    return <button onClick={() => mutate(postId)} className="button-tertiary">Delete me!</button>
+    return <button onClick={() => mutate(postId)} className="button-secondary text-base w-35 cursor-pointer">Delete me!</button>
 }
 
 export default DeleteButton
