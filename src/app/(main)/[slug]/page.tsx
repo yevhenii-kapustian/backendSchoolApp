@@ -20,7 +20,10 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
 
   const { data: { user } } = await supabase.auth.getUser()
   const isAuthor = user?.id === post.user_id
-  console.log(user);
+  const { data: author  } = await supabase.from("users")
+                                              .select("username, created_at")
+                                              .eq("id", post.user_id)
+                                              .single()
   
 
   return (
@@ -41,7 +44,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
           </div>
 
           <div className="p-5 bg-white rounded">
-            <UserSection userName={user?.user_metadata.username} createdTime={user!.created_at} />
+            <UserSection userName={author!.username} createdTime={author!.created_at} />
           </div>
         </div>
       </section>
