@@ -1,13 +1,18 @@
 'use client'
 
-import { SetStateAction, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import { Search, X } from 'lucide-react';
 import { useQuery } from "@tanstack/react-query";
 import { getSearchPost } from "@/utils/supabase/queries";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const SearchInput = () => {
+    const pathname = usePathname()
+
     const [userInput, setUserInput] = useState<string>('')
+    const [isHidden, setIsHidden] = useState<boolean>(false)
+
     const {data} = useQuery({
         queryKey: ['search-results', userInput],
         queryFn: async () => {
@@ -26,9 +31,15 @@ const SearchInput = () => {
     const hadndleRemove = () => {
         setUserInput("")
     }
+
+    useEffect(() => {     
+        if (pathname === "/create" || pathname.includes("/edit")) {
+            setIsHidden(true)
+        }
+    }, [pathname])
     
     return (
-        <div className="relative max-w-[940px] mt-5 m-auto">
+        <div className={isHidden ? "hidden" : "relative max-w-[940px] mt-10 m-auto"}>
             <div className="flex items-center gap-1 bg-white rounded">
                 <Search size={35} className="pl-3" />
                 <input onChange={handleChange} value={userInput} className="w-full py-5 px-3 outline-none" type="text" placeholder="What are you looking for?" />
