@@ -8,7 +8,7 @@ const AccountLinks = async () => {
     const { data: {user} } = await supabase.auth.getUser()
     
     return (
-    <div className="flex items-center">
+    <div className="flex items-center z-2">
       {user ? (
         <>
           <div className="relative group">

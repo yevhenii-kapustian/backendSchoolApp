@@ -8,15 +8,18 @@ export const uploadImages = async (images: File[]): Promise<string[]> => {
 
   const names = images.map(async (file) => {
     const imageName = file.name.split(".")
-    const path:string = `${file.name[0]}-${uuid()}.${imageName[1]}`
+    const ext = imageName[1] || "png"
+    const path: string = `${uuid()}.${ext}`
     const { data, error } = await supabase.storage
-                                            .from("post-images")
-                                            .upload(path, file)
+      .from("post-images")
+      .upload(path, file)
+
     if (error) throw error
 
-    const { data: {publicUrl} } = supabase.storage
-                                        .from("post-images")
-                                        .getPublicUrl(data.path)
+    const { data: { publicUrl } } = supabase.storage
+      .from("post-images")
+      .getPublicUrl(data.path)
+
     return publicUrl
   })
   

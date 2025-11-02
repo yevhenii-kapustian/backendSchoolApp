@@ -1,7 +1,7 @@
 'use client'
 
 import { SetStateAction, useState } from "react"
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useQuery } from "@tanstack/react-query";
 import { getSearchPost } from "@/utils/supabase/queries";
 import Link from "next/link";
@@ -22,17 +22,23 @@ const SearchInput = () => {
     const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setUserInput(e.target.value)
     }
+
+    const hadndleRemove = () => {
+        setUserInput("")
+    }
     
     return (
-        <div className="relative">
-            <div className="flex items-center gap-5">
-               <Search />
-               <input onChange={handleChange} value={userInput} className="p-2 border rounded-xl" type="text" placeholder="Search by post title" />
+        <div className="relative max-w-[940px] mt-5 m-auto">
+            <div className="flex items-center gap-1 bg-white rounded">
+                <Search size={35} className="pl-3" />
+                <input onChange={handleChange} value={userInput} className="w-full py-5 px-3 outline-none" type="text" placeholder="What are you looking for?" />
+                {userInput.length > 0 && <X size={35} className="pr-3 cursor-pointer" onClick={hadndleRemove} /> }
             </div>
            {data && 
-           <div className="mt-5 p-2 absolute border rounded-xl bg-white">
+           <div className="w-full mt-2 py-2 px-4 absolute rounded bg-white shadow-md z-2">
+            <p className="mt-2 text-xs text-[#6f6f6f] uppercase">Recommendations</p>
                 {data.map(({title, slug}) => (
-                   <Link onClick={() => setUserInput("")} key={slug} href={`/${slug}`} className="block p-2 border-b">
+                   <Link onClick={() => setUserInput("")} key={slug} href={`/${slug}`} className="block mt-1 py-2 px-4 hover:bg-gray-100">
                        {title}
                    </Link>
                 ))}
