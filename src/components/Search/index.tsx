@@ -1,6 +1,6 @@
 'use client'
 
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useState } from "react"
 import { Search, X } from 'lucide-react';
 import { useQuery } from "@tanstack/react-query";
 import { getSearchPost } from "@/utils/supabase/queries";
@@ -9,9 +9,9 @@ import { usePathname } from "next/navigation";
 
 const SearchInput = () => {
     const pathname = usePathname()
+    const isHidden = pathname === "/create" || pathname.includes("/edit")
 
     const [userInput, setUserInput] = useState<string>('')
-    const [isHidden, setIsHidden] = useState<boolean>(false)
 
     const {data} = useQuery({
         queryKey: ['search-results', userInput],
@@ -31,12 +31,6 @@ const SearchInput = () => {
     const hadndleRemove = () => {
         setUserInput("")
     }
-
-    useEffect(() => {     
-        if (pathname === "/create" || pathname.includes("/edit")) {
-            setIsHidden(true)
-        }
-    }, [pathname])
     
     return (
         <div className={isHidden ? "hidden" : "relative max-w-[940px] mt-10 m-auto"}>
