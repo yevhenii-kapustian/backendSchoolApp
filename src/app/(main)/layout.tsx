@@ -1,5 +1,6 @@
 import Header from "@/components/Header"
 import SearchInput from "@/components/Search"
+import Footer from "@/components/Footer"
 
 const MainLayout = ({children}: {children: React.ReactNode}) => {
     return (
@@ -9,6 +10,7 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
         <main className="mt-5 p-5">
             {children}
         </main>
+        <Footer/>
         </>
     )
 }

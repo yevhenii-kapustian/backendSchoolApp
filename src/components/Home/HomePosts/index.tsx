@@ -7,6 +7,7 @@ import Image from "next/image"
 const HomePosts = ({posts}: {posts: HomePostType}) => {
     return(
         <section className="w-[1200px] m-auto">
+            <h1 className="p-10 text-3xl font-bold text-center">Latest Posts</h1>
             <div className="grid grid-cols-4 gap-3">
                 {posts && posts.map(({id, slug, title, price, image, created_at}) => {
                     const date = new Date(created_at)
@@ -17,8 +18,8 @@ const HomePosts = ({posts}: {posts: HomePostType}) => {
                     return( 
                         <Link href={`/${slug}`} key={id} className="w-full flex flex-col bg-white rounded">
                             {image?.length 
-                                ? <Image src={image[0]} alt={title} width={800} height={800} className="w-full h-40 object-cover"/>
-                                : <p className="w-full h-40 flex justify-center items-center text-[#6f6f6f] bg-gray-200">No Images</p>
+                                ? <Image src={image[0]} alt={title} width={800} height={800} className="w-full h-40 object-cover rounded"/>
+                                : <p className="w-full h-40 flex justify-center items-center text-[#6f6f6f] bg-gray-200 rounded">No Images</p>
                             }
                             <div className="p-4 flex flex-col flex-1 justify-between">
                                 <p className="text-sm">{title}</p>

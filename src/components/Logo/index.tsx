@@ -2,8 +2,13 @@
 
 import Link from "next/link"
 
-const Logo = () => {
-    return <Link onClick={() => window.location.href = "/"} href="/" className="text-3xl text-[#23E5DB] font-bold uppercase">Yev</Link>
+interface LogoProps {
+    textColor: string,
+    fontSize: string
+}
+
+const Logo = ({textColor, fontSize}: LogoProps) => {
+    return <Link onClick={() => window.location.href = "/"} href="/" className="font-extrabold uppercase" style={{color: textColor, fontSize: fontSize}}>Yev</Link>
 }
 
 export default Logo
