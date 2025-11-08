@@ -7,7 +7,7 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
         <>
         <Header/>
         <SearchInput/>
-        <main className="mt-5 p-5">
+        <main className="mt-10 flex-1">
             {children}
         </main>
         <Footer/>

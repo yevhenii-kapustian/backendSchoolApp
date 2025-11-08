@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 const SearchInput = () => {
     const pathname = usePathname()
     const isHidden = pathname === "/create" || pathname.includes("/edit")
+    const isFullWidth = pathname === "/"
 
     const [userInput, setUserInput] = useState<string>('')
 
@@ -33,7 +34,7 @@ const SearchInput = () => {
     }
     
     return (
-        <div className={isHidden ? "hidden" : "relative max-w-[940px] mt-10 m-auto"}>
+        <div className={isHidden ? "hidden" : `${isFullWidth ? "w-[1200px]" : "max-w-[940px]"} relative mt-10 m-auto`}>
             <div className="flex items-center gap-1 bg-white rounded">
                 <Search size={35} className="pl-3" />
                 <input onChange={handleChange} value={userInput} className="w-full py-5 px-3 outline-none" type="text" placeholder="What are you looking for?" />

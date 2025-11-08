@@ -7,9 +7,9 @@ import Image from "next/image"
 const HomePosts = ({posts}: {posts: HomePostType}) => {
     return(
         <section className="w-[1200px] m-auto">
-            <h1 className="p-10 text-3xl font-bold text-center">Latest Posts</h1>
+            <h1 className="p-10 text-2xl font-extrabold text-center text-[#393939]">Latest Posts</h1>
             <div className="grid grid-cols-4 gap-3">
-                {posts && posts.map(({id, slug, title, price, image, created_at}) => {
+                {posts.length > 0 && posts.map(({id, slug, title, price, image, created_at}) => {
                     const date = new Date(created_at)
                     const createdDay = date.getDate()
                     const createdMonth = date.toLocaleString('default', { month: 'long' });
@@ -26,10 +26,12 @@ const HomePosts = ({posts}: {posts: HomePostType}) => {
                                 <p className="mt-2 font-bold">{price} $</p>
                                 <p className="mt-2 text-xs text-[#6f6f6f]">Published {createdMonth} {createdDay}, {createdYear}</p>
                             </div>
-                        </Link> 
+                        </Link>
                     )
                 })}
             </div>
+
+            {posts.length === 0 && <p className="text-center text-[#6f6f6f] capitalize">No posts found in this category</p>}
         </section>
     )
 }
