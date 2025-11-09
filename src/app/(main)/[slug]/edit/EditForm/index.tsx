@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { postSchemaImage } from "@/actions/schemas"
 import { useEffect, useRef, useState } from "react"
 import { createClient } from "@/utils/supabase/browser-client"
-import { X, Undo2 } from "lucide-react"
+import { X, Undo2, ChevronDown } from "lucide-react"
 import ErrorMessage from "@/components/ErrorMessage"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -20,11 +20,14 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
     const {slug} = useParams()
     
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
-    const [existingImages, setExistingImages] = useState<string[] | null>(initialValues.image)    
+    const [existingImages, setExistingImages] = useState<string[] | null>(initialValues.image)
     const [titleCharacters, setTitleCharacters] = useState<number>(0)
     const [descriptionCharacters, setDescriptionCharacters] = useState<number>(0)
-    
+    const [selectedCategory, setSelectedCategory] = useState<{id: number, name: string} | null>(null)
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const categoryRef = useRef<HTMLDivElement | null>(null)
 
     const { data: categories = [] } = useQuery({
             queryKey: ['categories'],
@@ -46,12 +49,6 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
         }
     })
 
-    useEffect(() => {
-        if (initialValues.category_id && categories.length > 0) {
-            setValue("category_id", initialValues.category_id)
-        }
-    }, [initialValues?.category_id, categories, setValue])
-
     const { mutate, error, isPending } = useMutation({
         mutationFn: EditPost
     })
@@ -71,6 +68,28 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
         setSelectedFiles([])
         setExistingImages([])
     }
+
+    const handleCategorySelect = (category: typeof categories[0]) => {
+        setSelectedCategory({id: Number(category.id), name: category.name ?? ''})
+        setValue("category_id", String(category.id))
+        setIsCategoryOpen(false)
+    }
+
+    const toggleCategoryMenu = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsCategoryOpen(prev => !prev);
+
+        if (!isCategoryOpen) {
+            const closeOnOutsideClick = (event: MouseEvent) => {
+                const target = event.target as HTMLElement;
+                if (!categoryRef.current?.contains(target)) {
+                    setIsCategoryOpen(false);
+                    document.removeEventListener('mousedown', closeOnOutsideClick);
+                }
+            };
+            document.addEventListener('mousedown', closeOnOutsideClick);
+        }
+    };
 
     const handleSubmitForm = handleSubmit((values) => {
         let imageForm: null | FormData = null
@@ -94,22 +113,31 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
             currentImages: existingImages ?? null
         })
     })
+
+    useEffect(() => {
+        if (initialValues.category_id && categories.length > 0) {
+            const initialCat = categories.find(c => String(c.id) === String(initialValues.category_id))
+            if (initialCat) {
+                setSelectedCategory({id: Number(initialCat.id), name: initialCat.name ?? ''})
+            }
+        }
+    }, [initialValues.category_id, categories])
     
     return(
         <>
         <form onSubmit={handleSubmitForm} className="flex flex-col">
             <div className="p-5 bg-white rounded">
-                <h3 className="text-xl font-semibold">Describe in detail</h3>
+                <h3 className="text-xl text-[#02282c] font-semibold">Describe in detail</h3>
 
                 <fieldset className="mt-5 flex flex-col gap-2">
-                    <label htmlFor="title" className="text-sm">Please enter a title *</label>
-                    <input className="w-2/3 p-2 border border-[#BEBEBE] rounded" 
+                    <label htmlFor="title" className="text-sm text-[#02282c]">Please enter a title *</label>
+                    <input className="w-2/3 py-2 px-4 border border-[#BEBEBE] rounded max-sm:w-full" 
                             {...register("title")} 
                             id="title" 
                             placeholder="Example: iphone 11 with warranty"
                             onChange={(e) => setTitleCharacters(e.target.value.length)}
                     />
-                    <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                    <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f] max-sm:w-full">
                         <p>Please enter at least 12 characters</p>
                         <p>{titleCharacters}/70</p>
                     </div>
@@ -117,35 +145,81 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
                 </fieldset>
 
                 <fieldset className="mt-4 flex flex-col gap-2">
-                    <label htmlFor="content" className="text-sm">Category *</label>
-                        <select
-                            className="w-2/5 py-4 px-2 border text-[#6d6d6d] bg-[#F2F4F5] border-[#BEBEBE] rounded"
-                            {...register("category_id")}
-                            id="category"      
+                    <label className="text-sm text-[#02282c] font-semibold">Category *</label>
+                    <p className="text-xs text-[#6f6f6f]">Choose the category that best fits your post</p>
+
+                    <div ref={categoryRef} className="relative w-full sm:w-2/5 max-sm:w-full">
+                        <input type="hidden" 
+                                {...register("category_id")} 
+                                value={selectedCategory?.id ? String(selectedCategory.id) : ''}
+                        />
+
+                        <button type="button"
+                                onClick={toggleCategoryMenu}
+                                className={`
+                                    w-full py-4 px-4
+                                    border border-[#BEBEBE] rounded-lg
+                                    text-left capitalize cursor-pointer
+                                    transition-all duration-200
+                                    flex items-center justify-between
+                                `}
                         >
-                            <option>Select a category</option>
+                            <span>{selectedCategory?.name ?? 'Select a category'}</span>
+                            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isCategoryOpen ? 'rotate-180' : ''}`}/>
+                        </button>
+
+                        <div className={`
+                                absolute top-full left-0 right-0 mt-2
+                                bg-white rounded-lg shadow-lg border-2 border-gray-200
+                                max-h-[300px] overflow-y-auto
+                                z-50
+                                transform transition-all duration-300 ease-out origin-top
+                                ${isCategoryOpen
+                                    ? 'opacity-100 scale-y-100 translate-y-0'
+                                    : 'opacity-0 scale-y-95 -translate-y-2 pointer-events-none'
+                                }
+                            `}
+                        >
                             {categories.map((category) => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
+                                <button key={category.id}
+                                        type="button"
+                                        onClick={() => handleCategorySelect(category)}
+                                        className={`
+                                            w-full px-4 py-3 text-left capitalize
+                                            transition-colors duration-150 cursor-pointer
+                                            flex items-center justify-between
+                                            ${selectedCategory?.id === Number(category.id)
+                                                ? 'bg-gradient-to-r from-[#02282C] to-[#23e5db] text-white'
+                                                : 'hover:bg-[#23e5db]/10 text-[#02282C]'
+                                            }
+                                            border-b border-gray-100 last:border-b-0
+                                        `}
+                                >
+                                    <span className="flex items-center gap-3">
+                                        {category.name}
+                                    </span>
+                                </button>
                             ))}
-                        </select>
-                        <ErrorMessage message={errors.category_id?.message ?? ""} />
+                        </div>
+                    </div>
+
+                    <ErrorMessage message={errors.category_id?.message ?? ""} />
                 </fieldset>
             </div>
 
             <div className="mt-2 p-5 bg-white rounded">
-              <h3 className="text-xl font-semibold">Pictures</h3>
+              <h3 className="text-xl text-[#02282c] font-semibold">Pictures</h3>
 
-                <div className="relative w-2/3 mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 border-2 border-dashed border-gray-400 rounded-xl p-6">
+                <div className="relative w-2/3 mt-4 grid grid-cols-4 max-lg:grid-cols-2 gap-3 border-2 border-dashed border-gray-400 rounded-xl p-6 max-sm:w-full">
                     <X className="absolute right-[-15px] top-[-15px] bg-white rounded-2xl cursor-pointer" size={30} onClick={handleRemovePictures} color="gray"/>
-                    <input
-                        type="file"
-                        id="image"
-                        accept="image/png, image/jpeg"
-                        {...register("image")}
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        className="hidden"
-                        disabled={selectedFiles.length >= 4}
+                    <input type="file"
+                            id="image"
+                            accept="image/png, image/jpeg"
+                            {...register("image")}
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            className="hidden"
+                            disabled={selectedFiles.length >= 4}
                     />
 
                     {existingImages && existingImages.map((src, i) => (
@@ -185,16 +259,16 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
 
             <div className="mt-2 p-5 bg-white rounded">
                 <fieldset className="mt-4 flex flex-col gap-2">
-                    <label htmlFor="content" className="text-sm">Description *</label>
+                    <label htmlFor="content" className="text-sm text-[#02282c]">Description *</label>
                     <textarea 
-                            className="w-2/3 p-4 border border-[#BEBEBE] rounded resize-none" 
+                            className="w-2/3 p-4 border border-[#BEBEBE] rounded resize-none max-sm:w-full" 
                             {...register("content")} 
                             id="content" 
                             onChange={(e) => setDescriptionCharacters(e.target.value.length)}
                             placeholder="Think about what details you'd like to see in the ad and add them to the description" 
                             rows={7} 
                     />
-                    <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                    <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f] max-sm:w-full">
                         <p>Please enter at least 40 characters</p>
                         <p>{descriptionCharacters}/9000</p>
                     </div>
@@ -205,8 +279,8 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
             <div className="mt-2 p-5 bg-white rounded">
                 <h3 className="button-secondary w-fit px-10 text-base font-semibold">Sell</h3>
                 <fieldset className="mt-5 flex flex-col gap-2">
-                    <label htmlFor="title" className="text-sm">Price *</label>
-                    <div className="w-1/4 flex items-center border border-[#BEBEBE] rounded">    
+                    <label htmlFor="title" className="text-sm text-[#02282c]">Price *</label>
+                    <div className="w-1/4 flex items-center border border-[#BEBEBE] rounded max-sm:w-1/2">    
                         <input
                             className="w-full p-2"
                             {...register("price")}
@@ -219,11 +293,7 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
             </div>
 
             <div className="mt-2 p-5 bg-white flex justify-end items-center gap-5">
-                <Link href=""
-                        onClick={(e) => {
-                                        e.preventDefault()
-                                        window.location.href = `/${slug}`
-                                }}
+                <Link href={`/${slug}`}
                         className="w-fit py-2 px-4 flex items-center gap-2 text-base text-center font-bold border-b cursor-pointer"
                 >
                     <p>Cancel</p>

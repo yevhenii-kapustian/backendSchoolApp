@@ -15,6 +15,7 @@ const CategoriesSection = ({categories, setSelectedCategory}: CategoriesSectionP
         const newCategory = activeCategory === name ? null : name
         setActiveCategory(newCategory)
         setSelectedCategory(newCategory)
+        location.href = "#home-posts"
     }
 
     return (

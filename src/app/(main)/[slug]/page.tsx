@@ -27,18 +27,18 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   
 
   return (
-    <div className="w-fit m-auto">
+    <div className="w-fit mb-10 m-auto max-lg:w-full max-lg:px-4">
         <Link href="/" className="w-fit flex items-center text-[#02282C] font-bold">
           <ChevronLeft size={30}/>
           Back
         </Link>
 
-      <section className="w-fit mt-5 flex gap-5">
-        <div className="p-5 flex items-center justify-center bg-white rounded max-w-[600px] min-w-[600px] min-h-[600px] w-full">
+      <section className="w-fit mt-5 flex gap-5 max-lg:flex-col max-lg:w-full">
+        <div className="relative p-5 flex items-center justify-center bg-white rounded max-w-[600px] min-w-[600px] min-h-[600px] w-full max-lg:max-w-full max-lg:min-w-full">
           {post.image?.length ? <ImagesSection images={post.image} /> : <p className="text-[#6f6f6f]">No Images</p> }
         </div>
 
-        <div className="w-80 flex flex-col gap-5">
+        <div className="w-80 flex flex-col gap-5 max-lg:w-full">
           <div className="p-5 bg-white rounded">
             <InfoSection createdTime={post.created_at} title={post.title} price={post.price} />
           </div>
@@ -49,7 +49,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <section className="p-5 bg-white rounded max-w-[600px] w-full mt-5">
+      <section className="p-5 bg-white rounded max-w-[600px] w-full mt-5 max-lg:max-w-full">
         <DescriptionSection description={post.content} category={post.categories!.name} />
       </section>
 

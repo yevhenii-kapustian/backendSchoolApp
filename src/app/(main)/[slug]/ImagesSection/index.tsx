@@ -20,35 +20,58 @@ export function ImagesSection({ images }:ImagesSectionProps) {
   }
 
   return (
-    <div className="relative flex justify-between items-center gap-5 w-[600px] h-[600px]">
+      <div
+      className="
+        relative flex items-center justify-center
+        max-w-[600px] w-full h-[600px]
+        bg-white rounded overflow-hidden
+        max-lg:w-full max-lg:h-[600px]
+      "
+    >
+      {/* Кнопка "назад" */}
       {images.length > 1 && (
         <button
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            className="bg-white/80 p-2 h-fit rounded-full hover:bg-white disabled:opacity-20 disabled:cursor-default shadow cursor-pointer"
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="
+            absolute left-3 top-1/2 -translate-y-1/2
+            z-10 bg-white/80 p-2 rounded-full 
+            hover:bg-white shadow
+            disabled:opacity-20 disabled:cursor-default
+          "
         >
           <ChevronLeft />
         </button>
       )}
 
-    <div className="w-full h-full">
-      {images.length > 0 && 
-          <Image 
+      {/* Изображение */}
+      <div className="w-full h-full">
+        {images.length > 0 && (
+          <Image
             key={images[currentIndex]}
             src={images[currentIndex]}
             alt={`picture ${currentIndex + 1}`}
             width={2000}
             height={2000}
-            className="object-contain w-full h-full transition-transform duration-300 ease-in-out"
+            className="
+              object-contain w-full h-full
+              transition-transform duration-300 ease-in-out
+            "
           />
-      }
-    </div>
+        )}
+      </div>
 
+      {/* Кнопка "вперёд" */}
       {images.length > 1 && (
         <button
           onClick={handleNext}
           disabled={currentIndex === images.length - 1}
-          className="bg-white/80 p-2 h-fit rounded-full hover:bg-white disabled:opacity-20 disabled:cursor-default shadow cursor-pointer"
+          className="
+            absolute right-3 top-1/2 -translate-y-1/2
+            z-10 bg-white/80 p-2 rounded-full 
+            hover:bg-white shadow
+            disabled:opacity-20 disabled:cursor-default
+          "
         >
           <ChevronRight />
         </button>
