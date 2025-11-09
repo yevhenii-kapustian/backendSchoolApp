@@ -90,13 +90,13 @@ const CreatePostForm = () => {
             <fieldset className="mt-5 flex flex-col gap-2">
                 <label htmlFor="title" className="text-sm">Please enter a title *</label>
                 <input
-                    className="w-2/3 p-2 border border-[#BEBEBE] rounded"
+                    className="w-2/3 p-2 border border-[#BEBEBE] rounded max-sm:w-full"
                     {...register("title")}
                     id="title"
                     placeholder="Example: iphone 11 with warranty"
                     onChange={(e) => setTitleCharacters(e.target.value.length)}
                 />
-                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f] max-sm:w-full">
                     <p>Please enter at least 12 characters</p>
                     <p>{titleCharacters}/70</p>
                 </div>
@@ -106,7 +106,7 @@ const CreatePostForm = () => {
             <fieldset className="mt-4 flex flex-col gap-2">
                 <label htmlFor="category" className="text-sm">Category *</label>
                 <select
-                    className="w-2/5 py-4 px-2 border text-[#6d6d6d] bg-[#F2F4F5] border-[#BEBEBE] rounded"
+                    className="w-2/5 py-4 px-2 border text-[#6d6d6d] bg-[#F2F4F5] border-[#BEBEBE] rounded max-sm:w-full"
                     {...register("category_id")}
                     id="category"      
                 >
@@ -122,7 +122,7 @@ const CreatePostForm = () => {
         <div className="mt-2 p-5 bg-white rounded">
           <h3 className="text-xl font-semibold">Pictures</h3>
 
-          <div className="relative w-2/3 mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 border-2 border-dashed border-gray-400 rounded-xl p-6">
+          <div className="relative w-2/3 max-sm:w-full mt-4 grid grid-cols-4 max-lg:grid-cols-2 gap-3 border-2 border-dashed border-gray-400 rounded-xl p-6">
             <X className="absolute right-[-15px] top-[-15px] bg-white rounded-2xl cursor-pointer" size={30} onClick={handleRemovePictures} color="gray"/>
             <input
                   type="file"
@@ -164,14 +164,14 @@ const CreatePostForm = () => {
             <fieldset className="mt-4 flex flex-col gap-2">
                 <label htmlFor="content" className="text-sm">Description *</label>
                 <textarea
-                    className="w-2/3 p-4 border border-[#BEBEBE] rounded resize-none"
+                    className="w-2/3 p-4 border border-[#BEBEBE] rounded resize-none max-sm:w-full"
                     {...register("content")}
                     id="content"
                     onChange={(e) => setDescriptionCharacters(e.target.value.length)}
                     placeholder="Think about what details you'd like to see in the ad and add them to the description"
                     rows={7}          
                 />
-                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f]">
+                <div className="w-2/3 flex items-center justify-between text-sm text-[#6f6f6f] max-sm:w-full">
                     <p>Please enter at least 40 characters</p>
                     <p>{descriptionCharacters}/9000</p>
                 </div>
@@ -183,7 +183,7 @@ const CreatePostForm = () => {
             <h3 className="button-secondary w-fit px-10 text-base font-semibold">Sell</h3>
             <fieldset className="mt-5 flex flex-col gap-2">
                 <label htmlFor="title" className="text-sm">Price *</label>
-                <div className="w-1/4 flex items-center border border-[#BEBEBE] rounded">
+                <div className="w-1/4 flex items-center border border-[#BEBEBE] rounded max-sm:w-1/2">
                     <input
                         className="w-full p-2"
                         {...register("price")}
