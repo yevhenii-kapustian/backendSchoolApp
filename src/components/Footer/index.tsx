@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="w-180 m-auto flex flex-col items-center max-[800px]:w-full">
                 <Logo textColor="#02282C" fontSize="46px"/>
                 <p className="mt-7 text-center text-sm text-[#02282C]">
-                    All online classifieds in Sweden on YEV - you'll find what you're looking for here! By clicking the "Create Post" button, you can post an ad on any topic quickly and easily. With YEV, you can buy or sell virtually anything.
+                    All online classifieds in Sweden on YEV - {`you'll`} find what {`you're`} looking for here! By clicking the {'"Create Post"'} button, you can post an ad on any topic quickly and easily. With YEV, you can buy or sell virtually anything.
                 </p>
                 
                 <div className="mt-7 flex flex-col items-center">

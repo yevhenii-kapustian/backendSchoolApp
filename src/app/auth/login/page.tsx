@@ -3,8 +3,8 @@ import LoginRouter from "./LoginRouter"
 
 const LoginPage  = () => {
     return(
-        <div className="w-[400px] mx-auto p-8 rounded bg-white">
-            <div className="mb-3 flex justify-between border-b">
+        <div className="w-full max-w-[400px] sm:max-w-[420px] bg-white rounded-lg shadow-xl p-6 sm:p-8 mx-auto">
+            <div className="mb-4 flex justify-between border-b pb-2">
                 <LoginRouter/>
             </div>
             <LoginForm/>

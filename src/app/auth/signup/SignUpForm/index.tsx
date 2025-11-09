@@ -27,33 +27,42 @@ const SignUpForm = () => {
     }
 
     return (
-        <form className="flex flex-col gap-3" onSubmit={handleSubmit(values => mutate(values))}>
-              <fieldset className="flex flex-col">
-                <label htmlFor="username">Enter your name</label>
-                <input className="py-2 px-3 bg-[rgb(242,244,245)] rounded" type="text" {...register("username")} id="username"/>
-                {errors.username && <ErrorMessage message={errors.username.message!}/> }
-            </fieldset>
+        <>
+        <div className="w-full bg-white rounded-lg shadow-xl p-4 sm:p-6 lg:p-8">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#02282C] mb-4 sm:mb-6 text-center">Create Account</h2>
 
-            <fieldset className="flex flex-col">
-                <label htmlFor="email">Enter your email</label>
-                <input className="py-2 px-3 bg-[rgb(242,244,245)] rounded" type="text" {...register("email")} id="email"/>
-                {errors.email && <ErrorMessage message={errors.email.message!}/> }
-            </fieldset>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit(values => mutate(values))}>
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="username" className="text-sm font-medium text-[#02282C]">Enter your name</label>
+                    <input className="py-2.5 px-4 bg-[rgb(242,244,245)] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-[#0C74B0] transition-all" type="text" {...register("username")} id="username"/>
+                    {errors.username && <ErrorMessage message={errors.username.message!}/> }
+                </fieldset>
 
-             <fieldset className="flex flex-col">
-                <label htmlFor="password">Enter your password</label>
-                <div className="relative flex items-center bg-[rgb(242,244,245)]">
-                    <input className="w-full py-2 px-3 rounded" type={toShow ? "text" : "password"} {...register("password")} id="password"/>
-                    <div onClick={handleShowPassword} className="px-3 cursor-pointer"> {toShow ? <EyeOff color="#3B3B3B" size={20} /> : <Eye color="#3B3B3B" size={20}/>} </div>
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="email" className="text-sm font-medium text-[#02282C]">Enter your email</label>
+                    <input className="py-2.5 px-4 bg-[rgb(242,244,245)] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-[#0C74B0] transition-all" type="text" {...register("email")} id="email"/>
+                    {errors.email && <ErrorMessage message={errors.email.message!}/> }
+                </fieldset>
+
+                <fieldset className="flex flex-col gap-2">
+                    <label htmlFor="password" className="text-sm font-medium text-[#02282C]">Enter your password</label>
+                    <div className="relative flex items-center bg-[rgb(242,244,245)] rounded-lg">
+                        <input className="w-full py-2.5 px-4 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-[#0C74B0] transition-all" type={toShow ? "text" : "password"} {...register("password")} id="password"/>
+                        <div onClick={handleShowPassword} className="px-3 cursor-pointer"> {toShow ? <EyeOff color="#3B3B3B" size={20} /> : <Eye color="#3B3B3B" size={20}/>} </div>
+                    </div>
+                    {errors.password && <ErrorMessage message={errors.password.message!}/> }
+                </fieldset>
+
+                <div className="text-xs sm:text-sm text-[#6f6f6f] mt-2">
+                    By creating a profile, you agree to the <span className="font-bold text-[#02282C]">Terms of Use</span>
                 </div>
-                {errors.password && <ErrorMessage message={errors.password.message!}/> }
-            </fieldset>
-            <div className="text-sm">
-                By creating a profile, you agree to the <span className="font-bold">Terms of Use</span>
-            </div>
-            <button className="mt-5 button-secondary w-full cursor-pointer">{isPending ? "Sign Up is pending" : "Sign Up"}</button>
-            {error && <ErrorMessage message={error.message}/> }
-        </form>
+
+                <button className="mt-2 button-secondary w-full cursor-pointer py-3 text-base font-semibold">{isPending ? "Creating account..." : "Sign Up"}</button>
+            </form>
+
+            {error && <div className="mt-4"><ErrorMessage message={error.message}/></div>}
+        </div>
+        </>
     )
 }
 
