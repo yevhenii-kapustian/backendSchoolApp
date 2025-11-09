@@ -6,9 +6,9 @@ import Image from "next/image"
 
 const HomePosts = ({posts}: {posts: HomePostType}) => {
     return(
-        <section className="w-[1200px] m-auto">
+        <section className="w-[1200px] m-auto max-[1250px]:w-full max-[1250px]:px-4">
             <h1 className="p-10 text-2xl font-extrabold text-center text-[#393939]">Latest Posts</h1>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-3 max-lg:grid-cols-3 max-sm:grid-cols-2">
                 {posts.length > 0 && posts.map(({id, slug, title, price, image, created_at}) => {
                     const date = new Date(created_at)
                     const createdDay = date.getDate()

@@ -29,28 +29,47 @@ const SearchInput = () => {
         setUserInput(e.target.value)
     }
 
-    const hadndleRemove = () => {
+    const handleRemove = () => {
         setUserInput("")
     }
     
     return (
-        <div className={isHidden ? "hidden" : `${isFullWidth ? "w-[1200px]" : "max-w-[940px]"} relative mt-10 m-auto`}>
-            <div className="flex items-center gap-1 bg-white rounded">
+    <div className={isHidden 
+                        ? "hidden" 
+                        : `${isFullWidth 
+                                ? "w-[1200px]" 
+                                : "max-w-[940px]"} 
+                                    mb-10 m-auto max-[1250px]:px-4 max-[1250px]:w-full`
+                    }
+        >
+            <div className="relative flex items-center gap-1 bg-white rounded">
                 <Search size={35} className="pl-3" />
-                <input onChange={handleChange} value={userInput} className="w-full py-5 px-3 outline-none" type="text" placeholder="What are you looking for?" />
-                {userInput.length > 0 && <X size={35} className="pr-3 cursor-pointer" onClick={hadndleRemove} /> }
+                <input onChange={handleChange} 
+                        value={userInput} 
+                        className="w-full py-5 px-3 outline-none" 
+                        type="text" 
+                        placeholder="What are you looking for?"
+                />
+                {userInput.length > 0 && (
+                    <X size={35} className="pr-3 cursor-pointer" onClick={handleRemove} />
+                )}
+
+                {data && (
+                    <div className="absolute top-full left-0 w-full mt-2 py-2 px-4 rounded bg-white shadow-md z-10">
+                        <p className="mt-2 text-xs text-[#6f6f6f] uppercase">Recommendations</p>
+                        {data.map(({ title, slug }) => (
+                            <Link onClick={() => setUserInput("")}
+                                    key={slug}
+                                    href={`/${slug}`}
+                                    className="block mt-1 py-2 px-4 hover:bg-gray-100"
+                            >
+                                {title}
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </div>
-           {data && 
-           <div className="w-full mt-2 py-2 px-4 absolute rounded bg-white shadow-md z-2">
-            <p className="mt-2 text-xs text-[#6f6f6f] uppercase">Recommendations</p>
-                {data.map(({title, slug}) => (
-                   <Link onClick={() => setUserInput("")} key={slug} href={`/${slug}`} className="block mt-1 py-2 px-4 hover:bg-gray-100">
-                       {title}
-                   </Link>
-                ))}
-           </div>
-           }
-        </div>
+    </div>
     )
 }
 

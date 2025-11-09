@@ -6,8 +6,8 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
     return (
         <>
         <Header/>
-        <SearchInput/>
         <main className="mt-10 flex-1">
+            <SearchInput/>
             {children}
         </main>
         <Footer/>

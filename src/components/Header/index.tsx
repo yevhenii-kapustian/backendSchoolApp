@@ -9,7 +9,7 @@ const Header = async () => {
 
     return(
         <header className="w-full bg-[#02282C]">
-            <div className="w-[1200px] m-auto py-4 flex justify-between items-center relative max-[1250px]:w-full max-[1250px]:px-8">
+            <div className="w-[1200px] m-auto py-4 flex justify-between items-center relative max-[1250px]:w-full max-[1250px]:px-4">
                 <Logo textColor="#23e5db" fontSize="30px"/>
                 <div className="hidden lg:flex">
                     <AccountLinks/>
