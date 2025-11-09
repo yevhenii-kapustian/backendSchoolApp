@@ -8,8 +8,8 @@ const Header = async () => {
     const { data: { user } } = await supabase.auth.getUser()
 
     return(
-        <header className="w-full bg-[#02282C]">
-            <div className="w-[1200px] m-auto py-4 flex justify-between items-center relative max-[1250px]:w-full max-[1250px]:px-4">
+        <header className="sticky top-0 z-50 w-full bg-[#02282C] shadow-md">
+            <div className="w-full max-w-[1200px] mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center relative">
                 <Logo textColor="#23e5db" fontSize="30px"/>
                 <div className="hidden lg:flex">
                     <AccountLinks/>

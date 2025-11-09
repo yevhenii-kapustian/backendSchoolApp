@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, User } from 'lucide-react'
 import Link from 'next/link'
 import { User as UserType } from '@supabase/supabase-js'
@@ -14,34 +14,37 @@ const BurgerMenu = ({ user }: BurgerMenuProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleMenu = () => {
-        setIsOpen(!isOpen)
+        const newState = !isOpen
+        setIsOpen(newState)
+        document.body.style.overflow = newState ? "hidden" : "unset"
     }
 
     const closeMenu = () => {
         setIsOpen(false)
+        document.body.style.overflow = "unset"
     }
 
     return (
         <>
-            <button onClick={toggleMenu} 
-                    className="lg:hidden z-50 p-2 text-white hover:opacity-70 transition-opacity"
+            <button onClick={toggleMenu}
+                    className="lg:hidden relative z-[60] p-2 text-white hover:opacity-70 transition-opacity"
                     aria-label="Toggle menu"
             >
                 {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
 
-            <div className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 lg:hidden
-                            ${isOpen 
-                                ? 'opacity-50' 
+            <div className={`fixed inset-0 bg-black transition-opacity duration-300 z-[55] lg:hidden
+                            ${isOpen
+                                ? 'opacity-50'
                                 : 'opacity-0 pointer-events-none'
                             }
                 `}
                 onClick={closeMenu}
             />
 
-            <div className={`fixed top-0 right-0 h-full w-[280px] bg-[#02282C] z-40 transform transition-transform duration-300 ease-in-out lg:hidden
-                                ${isOpen 
-                                    ? 'translate-x-0' 
+            <div className={`fixed top-0 right-0 h-full w-[280px] bg-[#02282C] z-[58] transform transition-transform duration-300 ease-in-out lg:hidden
+                                ${isOpen
+                                    ? 'translate-x-0'
                                     : 'translate-x-full'
                                 }
                 `}
@@ -65,7 +68,7 @@ const BurgerMenu = ({ user }: BurgerMenuProps) => {
                                 </div>
                             </div>
 
-                            <nav className="flex-1 pt-6">
+                            <nav className="flex-1 pt-6 overflow-y-auto">
                                 <Link
                                     href="/"
                                     onClick={closeMenu}
@@ -89,7 +92,7 @@ const BurgerMenu = ({ user }: BurgerMenuProps) => {
                                 </Link>
                             </nav>
 
-                            <div className="pb-6">
+                            <div className="py-6">
                                 <button
                                     onClick={() => LogOut()}
                                     className="w-full py-3 px-4 text-white border border-white/30 hover:bg-white/10 rounded transition-colors"
