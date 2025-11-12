@@ -39,5 +39,12 @@ export const getCategories = async (supabase: ReturnType<typeof createClient>) =
                             .order("name", {ascending: true})
 }
 
+export const getComments = async (supabase: ReturnType<typeof createClient>, postId: number) => {
+    return await supabase.from("comments")
+                            .select("*")
+                            .eq("post_id", postId)
+                            .order("created_at", {ascending: true})
+}
+
 export type HomePostType = QueryData<ReturnType<typeof getHomePosts>>
 export type GetCategories = QueryData<ReturnType<typeof getCategories>>
