@@ -34,3 +34,24 @@ export const postSchemaImage = postSchema.omit({
         return value as FileList
     }).optional()
 })
+
+export const createCommentSchema = z.object({
+    content: z.string()
+        .min(1, "Comment cannot be empty")
+        .max(2000, "Comment must be a maximum of 2000 characters")
+        .trim(),
+    post_id: z.number().int().positive(),
+    parent_id: z.number().int().positive().optional().nullable()
+})
+
+export const updateCommentSchema = z.object({
+    id: z.number().int().positive(),
+    content: z.string()
+        .min(1, "Comment cannot be empty")
+        .max(2000, "Comment must be a maximum of 2000 characters")
+        .trim()
+})
+
+export const deleteCommentSchema = z.object({
+    id: z.number().int().positive()
+})

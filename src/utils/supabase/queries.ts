@@ -41,10 +41,33 @@ export const getCategories = async (supabase: ReturnType<typeof createClient>) =
 
 export const getComments = async (supabase: ReturnType<typeof createClient>, postId: number) => {
     return await supabase.from("comments")
-                            .select("*")
+                            .select(`
+                                id,
+                                content,
+                                created_at,
+                                parent_id,
+                                post_id,
+                                user_id,
+                                users(username)
+                            `)
                             .eq("post_id", postId)
                             .order("created_at", {ascending: true})
 }
 
+export const getSingleComment = async (supabase: ReturnType<typeof createClient>, commentId: number) => {
+    return await supabase.from("comments")
+                            .select(`
+                                id,
+                                content,
+                                created_at,
+                                parent_id,
+                                post_id,
+                                user_id
+                            `)
+                            .eq("id", commentId)
+                            .single()
+}
+
 export type HomePostType = QueryData<ReturnType<typeof getHomePosts>>
 export type GetCategories = QueryData<ReturnType<typeof getCategories>>
+export type CommentType = QueryData<ReturnType<typeof getComments>>[number]

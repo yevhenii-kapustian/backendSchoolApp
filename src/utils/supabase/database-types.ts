@@ -37,6 +37,7 @@ export type Database = {
       }
       comments: {
         Row: {
+          content: string
           created_at: string
           id: number
           parent_id: number | null
@@ -44,6 +45,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          content: string
           created_at?: string
           id?: number
           parent_id?: number | null
@@ -51,6 +53,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          content?: string
           created_at?: string
           id?: number
           parent_id?: number | null

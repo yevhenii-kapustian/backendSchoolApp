@@ -8,6 +8,7 @@ import { InfoSection } from "./InfoSection"
 import { UserSection } from "./UserSection"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
+import Comments from "@/components/Comments"
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params
@@ -53,6 +54,9 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
         <DescriptionSection description={post.content} category={post.categories!.name} />
       </section>
 
+      <section className="max-w-[1000px] w-full mt-8 p-5 bg-white rounded max-lg:max-w-full">
+        <Comments postId={post.id} />
+      </section>
 
       {isAuthor && (
         <section className="max-w-[600px] p-5 flex justify-end gap-5 mt-5 bg-white">
@@ -60,6 +64,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
           <DeleteButton postId={post.id} />
         </section>
       )}
+      
     </div>
   )
 }
