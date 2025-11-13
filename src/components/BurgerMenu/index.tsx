@@ -103,35 +103,39 @@ const BurgerMenu = ({ user }: BurgerMenuProps) => {
                         </>
                     ) : (
                         <>
-                            <nav className="flex-1 pt-6">
-                                <div className="flex items-center gap-3 mb-6 pb-6 border-b border-[#23e5db]/30">
-                                    <div className="w-12 h-12 rounded-full bg-[#23e5db]/20 flex items-center justify-center">
-                                        <User color="#23e5db" size={24} />
-                                    </div>
-                                    <div>
-                                        <p className="text-white font-bold text-base">Guest</p>
-                                        <p className="text-[#23e5db] text-xs">Not logged in</p>
-                                    </div>
+                            <div className="flex items-center gap-3 mb-6 pb-6 border-b border-[#23e5db]/30">
+                                <div className="w-12 h-12 rounded-full bg-[#23e5db]/20 flex items-center justify-center">
+                                    <User color="#23e5db" size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-white font-bold text-base">Guest</p>
+                                    <p className="text-[#23e5db] text-xs">Not logged in</p>
+                                </div>
+                            </div>
+
+                            <nav className="flex flex-col justify-between flex-1 overflow-y-auto">
+
+                                <div>
+                                    <Link
+                                        href="/"
+                                        onClick={closeMenu}
+                                        className="block py-3 px-4 text-white hover:bg-[#23e5db]/10 rounded transition-colors"
+                                    >
+                                        Home
+                                    </Link>
+                                    <Link
+                                        href="/auth/login"
+                                        onClick={closeMenu}
+                                        className="block py-3 px-4 mt-2 text-white hover:bg-[#23e5db]/10 rounded transition-colors"
+                                    >
+                                        Your Profile
+                                    </Link>
                                 </div>
 
                                 <Link
-                                    href="/"
-                                    onClick={closeMenu}
-                                    className="block py-3 px-4 text-white hover:bg-[#23e5db]/10 rounded transition-colors"
-                                >
-                                    Home
-                                </Link>
-                                <Link
                                     href="/auth/login"
                                     onClick={closeMenu}
-                                    className="block py-3 px-4 mt-2 text-white hover:bg-[#23e5db]/10 rounded transition-colors"
-                                >
-                                    Your Profile
-                                </Link>
-                                <Link
-                                    href="/auth/login"
-                                    onClick={closeMenu}
-                                    className="block py-3 px-4 mt-4 text-[#02282C] bg-[#23e5db] hover:opacity-80 rounded font-bold transition-opacity text-center"
+                                    className="block py-3 px-4 my-4 text-[#02282C] bg-[#23e5db] hover:opacity-80 rounded font-bold transition-opacity text-center"
                                 >
                                     Log In
                                 </Link>

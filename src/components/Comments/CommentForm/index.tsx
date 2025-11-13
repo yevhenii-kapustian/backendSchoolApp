@@ -24,7 +24,6 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
     const queryClient = useQueryClient()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    // Determine which schema to use based on mode
     const schema = mode === 'create' ? createCommentSchema : updateCommentSchema
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
@@ -34,7 +33,6 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
             : { content: '', post_id: postId, parent_id: parentId }
     })
 
-    // Mutation for creating comment
     const createMutation = useMutation({
         mutationFn: createComment,
         onSuccess: () => {
@@ -51,7 +49,6 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
         }
     })
 
-    // Mutation for editing comment
     const editMutation = useMutation({
         mutationFn: editComment,
         onSuccess: () => {

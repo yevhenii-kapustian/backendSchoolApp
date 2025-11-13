@@ -54,7 +54,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
         <DescriptionSection description={post.content} category={post.categories!.name} />
       </section>
 
-      <section className="max-w-[1000px] w-full mt-8 p-5 bg-white rounded max-lg:max-w-full">
+      <section className="max-w-[600px] mt-5 p-5 bg-white rounded max-lg:max-w-full">
         <Comments postId={post.id} />
       </section>
 
