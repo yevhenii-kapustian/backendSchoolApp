@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react"
+import Link from "next/link"
 
 interface InfoSectionProps {
     createdTime: string,
@@ -20,7 +21,9 @@ export function InfoSection ({createdTime, title, price}: InfoSectionProps) {
             </div>
             <h3 className="mt-5 text-xl">{title}</h3>
             <p className="mt-5 text-2xl font-bold">{price} $</p>
-            <button className="w-full mt-5 p-2 font-semibold border-2 cursor-pointer transition-all hover:bg-gray-100">Comment</button>
+            <div className="w-full mt-5 border-2 cursor-pointer transition-all hover:bg-gray-100">
+                <Link href="#comments-section" className="w-full p-2 block text-center font-semibold transition-all">Comment</Link>
+            </div>
         </>
     )
 }

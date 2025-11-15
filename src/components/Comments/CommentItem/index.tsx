@@ -40,9 +40,7 @@ const CommentItem = ({ comment, postId, currentUserId, replies, depth = 0 }: Com
     })
 
     const handleDelete = () => {
-        if (confirm("Are you sure you want to delete this comment?")) {
-            deleteMutation.mutate({ id: comment.id })
-        }
+        deleteMutation.mutate({ id: comment.id })
     }
 
     const handleReplySuccess = () => {

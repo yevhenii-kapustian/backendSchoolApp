@@ -28,7 +28,7 @@ const CommentActions = ({
             {canReply && (
                 <button
                     onClick={onReply}
-                    className="flex items-center gap-1 text-xs text-gray-600 hover:text-[#0C74B0] transition-colors"
+                    className="flex items-center gap-1 text-xs text-gray-600 hover:text-[#0C74B0] transition-colors cursor-pointer"
                 >
                     <MessageCircle size={14} />
                     <span>Reply</span>
@@ -39,7 +39,7 @@ const CommentActions = ({
                 <>
                     <button
                         onClick={onEdit}
-                        className="flex items-center gap-1 text-xs text-gray-600 hover:text-[#0C74B0] transition-colors"
+                        className="flex items-center gap-1 text-xs text-gray-600 hover:text-[#0C74B0] transition-colors cursor-pointer"
                     >
                         <Edit2 size={14} />
                         <span>Edit</span>
@@ -48,7 +48,7 @@ const CommentActions = ({
                     <button
                         onClick={onDelete}
                         disabled={isDeleting}
-                        className="flex items-center gap-1 text-xs text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-xs text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50 cursor-pointer"
                     >
                         <Trash2 size={14} />
                         <span>Delete</span>
@@ -59,7 +59,7 @@ const CommentActions = ({
             {replyCount > 0 && (
                 <button
                     onClick={onToggleReplies}
-                    className="text-xs text-gray-600 hover:text-[#0C74B0] transition-colors"
+                    className="text-xs text-gray-600 hover:text-[#0C74B0] transition-colors cursor-pointer"
                 >
                     {showReplies ? 'Hide' : 'Show'} {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
                 </button>

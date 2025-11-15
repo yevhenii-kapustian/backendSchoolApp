@@ -83,6 +83,7 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
                     rows={3}
                     className="w-full p-3 border border-[#BEBEBE] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0C74B0] transition-all text-sm sm:text-base"
                     disabled={isSubmitting}
+                    id="comments-section"
                 />
                 {errors.content && <ErrorMessage message={errors.content.message ?? ""} />}
             </fieldset>
@@ -91,7 +92,7 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-4 py-2 bg-gradient-to-r from-[#02282C] to-[#23e5db] text-white rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-gradient-to-r from-[#02282C] to-[#23e5db] text-white rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                     {isSubmitting ? "Posting..." : mode === 'edit' ? "Update" : parentId ? "Reply" : "Comment"}
                 </button>
@@ -100,7 +101,7 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-semibold text-sm hover:bg-gray-50 transition-colors"
+                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-semibold text-sm hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                         Cancel
                     </button>
