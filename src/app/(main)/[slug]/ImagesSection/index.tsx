@@ -4,11 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-interface ImagesSectionProps {
-  images: string[]
-}
-
-export function ImagesSection({ images }:ImagesSectionProps) {
+export function ImagesSection({ images }: {images: string[]}) {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
 
   const handleNext = () => {
@@ -20,15 +16,7 @@ export function ImagesSection({ images }:ImagesSectionProps) {
   }
 
   return (
-      <div
-      className="
-        relative flex items-center justify-center
-        max-w-[600px] w-full h-[600px]
-        bg-white rounded overflow-hidden
-        max-lg:w-full max-lg:h-[600px]
-      "
-    >
-      {/* Кнопка "назад" */}
+      <div className="relative flex items-center justify-center max-w-[600px] w-full h-[600px] bg-white rounded overflow-hidden max-lg:w-full max-lg:h-[600px]">
       {images.length > 1 && (
         <button
           onClick={handlePrev}
@@ -44,7 +32,6 @@ export function ImagesSection({ images }:ImagesSectionProps) {
         </button>
       )}
 
-      {/* Изображение */}
       <div className="w-full h-full">
         {images.length > 0 && (
           <Image
@@ -61,7 +48,6 @@ export function ImagesSection({ images }:ImagesSectionProps) {
         )}
       </div>
 
-      {/* Кнопка "вперёд" */}
       {images.length > 1 && (
         <button
           onClick={handleNext}

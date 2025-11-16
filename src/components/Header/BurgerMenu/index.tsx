@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Menu, X, User } from 'lucide-react'
 import Link from 'next/link'
 import { User as UserType } from '@supabase/supabase-js'

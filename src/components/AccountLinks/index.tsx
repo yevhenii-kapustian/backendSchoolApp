@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server-client"
 import Link from "next/link"
-import LogOut from "./LogOutButton"
+import LogOutButton from "./LogOutButton"
 import { User, ChevronDown } from "lucide-react"
 
 const AccountLinks = async () => {
@@ -28,10 +28,13 @@ const AccountLinks = async () => {
                 bg-white shadow-md rounded
               "
             >
-                <li className="py-2 px-6"><p className="text-[rgb(127,151,153)] font-bold">Your Profile</p></li>
+                <li className="py-2 px-6 bg-gray-100"><p className="text-[rgb(127,151,153)] font-bold">Your Profile</p></li>
+                <li className="text-sm hover:bg-[rgb(2,40,44)] hover:text-white">
+                  <Link className="w-full py-2 px-6 block" href="/myaccount">Posts</Link>
+                </li>
                 <span className="w-full h-[1px] block bg-black opacity-30" />
                 <li className="py-2 px-6 text-sm hover:bg-[rgb(2,40,44)] hover:text-white">
-                    <LogOut />
+                    <LogOutButton />
                 </li>
             </ul>
           </div>

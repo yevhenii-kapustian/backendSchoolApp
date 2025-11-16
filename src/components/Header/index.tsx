@@ -1,6 +1,6 @@
 import Logo from "../Logo"
 import AccountLinks from "../AccountLinks"
-import BurgerMenu from "../BurgerMenu"
+import BurgerMenu from "./BurgerMenu"
 import { createClient } from "@/utils/supabase/server-client"
 
 const Header = async () => {

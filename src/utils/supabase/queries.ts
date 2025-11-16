@@ -68,6 +68,11 @@ export const getSingleComment = async (supabase: ReturnType<typeof createClient>
                             .single()
 }
 
+export const getPostsByUser = async ( supabase: ReturnType<typeof createClient>, userId: string ) => {
+  return supabase.from("posts").select("*").eq("user_id", userId)
+}
+
 export type HomePostType = QueryData<ReturnType<typeof getHomePosts>>
 export type GetCategories = QueryData<ReturnType<typeof getCategories>>
 export type CommentType = QueryData<ReturnType<typeof getComments>>[number]
+export type UserPostsType = QueryData<ReturnType<typeof getPostsByUser>>
