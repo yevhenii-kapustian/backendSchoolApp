@@ -122,6 +122,11 @@ const EditForm = ({postId, initialValues}: {postId: number, initialValues: Pick<
             }
         }
     }, [initialValues.category_id, categories])
+
+    useEffect(() => {
+        setTitleCharacters(initialValues.title.length || 0)
+        setDescriptionCharacters(initialValues.content?.length || 0)
+    }, [initialValues])
     
     return(
         <>

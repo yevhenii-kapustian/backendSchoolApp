@@ -28,14 +28,13 @@ const CategoriesSection = ({categories, setSelectedCategory}: CategoriesSectionP
                     min-h-[70px]
                     py-3 px-3 sm:px-4
                     rounded-lg transition-all duration-300 ease-in-out
-                    transform hover:scale-105 hover:shadow-lg
+                    transform hover:scale-103 hover:shadow-lg
                     text-sm
                     ${activeCategory === name
-                        ? "text-white bg-gradient-to-br from-[#02282C] to-[#23e5db] shadow-md scale-105"
-                        : "text-[#02282C] bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200"
+                        ? "text-white bg-[#02282C] shadow-md scale-102"
+                        : "text-[#02282C] bg-gray-100 hover:bg-gray-200"
                     }
-                    cursor-pointer capitalize border-2
-                    ${activeCategory === name ? "border-[#23e5db]" : "border-transparent hover:border-gray-300"}
+                    cursor-pointer capitalize
                 `}
             >
                 {name}

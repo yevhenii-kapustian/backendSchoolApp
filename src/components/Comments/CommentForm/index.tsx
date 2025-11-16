@@ -92,7 +92,7 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-4 py-2 bg-gradient-to-r from-[#02282C] to-[#23e5db] text-white rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="px-4 py-2 bg-[#02282C] text-white rounded font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                     {isSubmitting ? "Posting..." : mode === 'edit' ? "Update" : parentId ? "Reply" : "Comment"}
                 </button>
