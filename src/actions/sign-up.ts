@@ -10,15 +10,12 @@ export const SignUp = async (userData: z.infer<typeof signUpSchema>) => {
 
     const supabase = await createClient()
 
-    const baseUrl = `${process.env.NEXT_PUBLIC_APP_URL}`
-    const redirectUrl = `${baseUrl}/auth/login`
-
     const { data: { user }, error: signUpError } = await supabase.auth.signUp({
         email: parsedData.email,
         password: parsedData.password,
         options: {
             data: { username: parsedData.username },
-            emailRedirectTo: redirectUrl
+            emailRedirectTo: `https://backend-school-app-jcm2.vercel.app/auth/login`
         }}
     )
 
