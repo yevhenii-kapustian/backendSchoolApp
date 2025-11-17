@@ -13,19 +13,12 @@ export const SignUp = async (userData: z.infer<typeof signUpSchema>) => {
         email: parsedData.email,
         password: parsedData.password,
         options: {
-            data: { username: parsedData.username }
-        }
-    })
+            data: { username: parsedData.username },
+            emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/login`
+        }}
+    )
 
     if (signUpError) throw signUpError
     if (!user || !user.email) throw new Error("User email is missing")
-
-    const { error: insertError } = await supabase.from('users').insert([{
-        id: user.id,
-        email: user.email,
-        username: parsedData.username
-    }])
-    if (insertError) throw insertError
-
-    redirect("/")
+    if (!user.email_confirmed_at) (redirect("/auth/signup/confirmation"))
 }
