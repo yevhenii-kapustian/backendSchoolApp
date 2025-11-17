@@ -7,10 +7,10 @@ import { signUpSchema } from "./schemas"
 
 export const SignUp = async (userData: z.infer<typeof signUpSchema>) => {
     const parsedData = signUpSchema.parse(userData)
-    
+
     const supabase = await createClient()
 
-    const baseUrl = `${process.env.VERCEL_URL}`
+    const baseUrl = `${process.env.NEXT_PUBLIC_APP_URL}`
     const redirectUrl = `${baseUrl}/auth/login`
 
     const { data: { user }, error: signUpError } = await supabase.auth.signUp({

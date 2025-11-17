@@ -9,8 +9,7 @@ export default async function Home() {
   const supabase = await createClient()
   const { data } = await getHomePosts(supabase)
   const {data: categories} = await getCategories(supabase)
-
-
+  
   return (
     <>
     {categories && data && <FilteredHome categories={categories} posts={data} /> }
