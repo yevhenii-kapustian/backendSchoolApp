@@ -7,6 +7,7 @@ import { signUpSchema } from "./schemas"
 
 export const SignUp = async (userData: z.infer<typeof signUpSchema>) => {
     const parsedData = signUpSchema.parse(userData)
+
     const supabase = await createClient()
 
     const { data: { user }, error: signUpError } = await supabase.auth.signUp({
@@ -14,21 +15,12 @@ export const SignUp = async (userData: z.infer<typeof signUpSchema>) => {
         password: parsedData.password,
         options: {
             data: { username: parsedData.username },
-            emailRedirectTo: `https://backend-school-app-jcm2.vercel.app/auth/login`
-        }
-    })
+            emailRedirectTo: `https://backend-school-app-jcm2.vercel.app/auth/login`,
+        },
+    }
+    )
 
     if (signUpError) throw signUpError
     if (!user || !user.email) throw new Error("User email is missing")
-
-    const { error: insertError } = await supabase
-        .from("users")
-        .insert({
-            id: user.id,
-            email: user.email,
-            username: parsedData.username
-        })
-
-    if (insertError) throw insertError
     if (!user.email_confirmed_at) redirect("/auth/signup/confirmation")
 }

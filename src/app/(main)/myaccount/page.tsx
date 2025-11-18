@@ -22,7 +22,7 @@ const MyAccountPage = async () => {
                      <MyPostsItem post={authorPosts}/> 
                     </section>
                 ) : ( 
-                    <div className="w-250 m-auto mt-5 py-10 flex flex-col items-center text-[#393939] gap-2">
+                    <div className="w-250 m-auto mt-5 py-10 px-5 flex flex-col items-center text-center text-[#393939] gap-2 max-lg:w-full">
                         <NoPostMessage/>
                     </div> 
                 )

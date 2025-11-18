@@ -83,7 +83,6 @@ const CommentForm = ({ postId, parentId = null, mode = 'create', existingComment
                     rows={3}
                     className="w-full p-3 border border-[#BEBEBE] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0C74B0] transition-all text-sm sm:text-base"
                     disabled={isSubmitting}
-                    id="comments-section"
                 />
                 {errors.content && <ErrorMessage message={errors.content.message ?? ""} />}
             </fieldset>

@@ -72,7 +72,7 @@ const Comments = ({ postId }: {postId: number}) => {
     }
 
     return (
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-4xl mx-auto scroll-mt-[calc(50vh-100px)]" id="comments-section">
             <CommentsHeader totalComments={totalComments} />
 
             {currentUserId ? (
