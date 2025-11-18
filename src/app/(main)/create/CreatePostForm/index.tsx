@@ -241,6 +241,7 @@ const CreatePostForm = () => {
                                       </div>
             ))}
           </div>
+            <ErrorMessage message={errors.image?.message ?? ""} />
 
           <p className="text-sm text-gray-400 mt-2">Up to 4 images (PNG or JPG)</p>
         </div>

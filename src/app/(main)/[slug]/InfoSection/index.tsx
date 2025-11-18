@@ -19,7 +19,7 @@ export function InfoSection ({createdTime, title, price}: InfoSectionProps) {
                 <p className="text-xs text-[#6f6f6f]">Published {createdMonth} {createdDay}, {createdYear}</p>
                 {/* <button className="cursor-pointer"> <Heart /> </button> */}
             </div>
-            <h3 className="mt-5 text-xl">{title}</h3>
+            <h3 className="mt-5 text-xl break-words">{title}</h3>
             <p className="mt-5 text-2xl font-bold">{price} $</p>
             <div className="w-full mt-5 border-2 cursor-pointer transition-all hover:bg-gray-100">
                 <Link href="#comments-section" className="w-full p-2 block text-center font-semibold transition-all">Comment</Link>

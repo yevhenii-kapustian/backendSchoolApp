@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+const MAX_IMAGE_SIZE = 12 * 1024 * 1024
+
 export const logInSchema = z.object({
     email: z.string().trim().email(),
     password: z.string().min(6, "Your password must be a minimum of 6 characters")
@@ -30,9 +32,16 @@ export const postSchema = z.object({
 export const postSchemaImage = postSchema.omit({
         image: true
     }).extend({
-        image: z.unknown().transform((value) => {
-        return value as FileList
-    }).optional()
+        image: z.unknown().transform((value) => value as FileList).refine(
+        (files) => {
+          if (!files) return true
+          for (const file of files) {
+            if (file.size > MAX_IMAGE_SIZE) return false
+          }
+          return true
+        },
+        "Each image must be smaller than 12MB"
+      ).optional()
 })
 
 export const createCommentSchema = z.object({
