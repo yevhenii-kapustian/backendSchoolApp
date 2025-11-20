@@ -33,7 +33,7 @@ const HomePosts = ({posts}: {posts: HomePostType}) => {
                                 : <p className="w-full h-40 flex justify-center items-center text-[#6f6f6f] bg-gray-200 rounded">No Images</p>
                             }
                             <div className="p-4 flex flex-col flex-1 justify-between">
-                                <p className="text-sm">{title}</p>
+                                <p className="text-sm break-words">{title}</p>
                                 <p className="mt-2 font-bold">{price} $</p>
                                 <p className="mt-2 text-xs text-[#6f6f6f]">Published {createdMonth} {createdDay}, {createdYear}</p>
                             </div>
